@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, ReactNode } from "react";
 import { ModeContext } from "contexts/ModeContext";
 import logo from "../../assets/images/logo.svg";
 import "./index.scss";
 
 interface LayoutProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 export const Layout = ({ children }: LayoutProps) => {

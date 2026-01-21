@@ -1,29 +1,18 @@
 {
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es6",
+    "target": "es2022",
     "module": "commonjs",
     "allowJs": true,
     "outDir": "dist",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "type-modules",
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es5",
-      "es6",
-      "dom"
-    ],
+    "typeRoots": ["type-modules", "node_modules/@types"],
+    "lib": ["es5", "es6", "dom"],
     "strict": false
   }
 }

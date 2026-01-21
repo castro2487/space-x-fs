@@ -1,6 +1,6 @@
 import { Launch } from "types";
 import { addFavorite, removeFavorite } from "api/favorites";
-import { ReactComponent as Star } from "assets/images/star.svg";
+import Star from "assets/images/star.svg";
 import "./index.scss";
 
 interface LaunchCardProps {

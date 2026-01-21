@@ -1,5 +1,5 @@
 import { useMemo, Dispatch, SetStateAction } from "react";
-import { ReactComponent as ChevronLeftIcon } from "assets/images/chevron-left.svg";
+import ChevronLeftIcon from "assets/images/chevron-left.svg";
 import "./index.scss";
 
 interface PaginationProps {
@@ -13,7 +13,7 @@ export const CARDS_PER_PAGE: number = 10;
 export const Pagination = ({
   itemsCount,
   value,
-  onChange
+  onChange,
 }: PaginationProps) => {
   const renderPages = useMemo(
     () =>
@@ -26,9 +26,9 @@ export const Pagination = ({
           >
             {i + 1}
           </div>
-        )
+        ),
       ),
-    [itemsCount, value]
+    [itemsCount, value],
   );
 
   return !!itemsCount ? (

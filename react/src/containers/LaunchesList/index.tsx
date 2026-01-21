@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useContext, useState } from "react";
 import { ModeContext } from "contexts/ModeContext";
 import { Launch } from "types";
@@ -16,7 +17,7 @@ export const LaunchesList = () => {
     setCurrentPage(1);
     // 3
     return setFilteredLaunches(
-      launches.filter((l: Launch) => showAll || l.favorite)
+      launches.filter((l: Launch) => showAll || l.favorite),
     );
   };
 
@@ -43,7 +44,7 @@ export const LaunchesList = () => {
           .filter(
             (_: Launch, i: number) =>
               i >= CARDS_PER_PAGE * (currentPage - 1) &&
-              i < CARDS_PER_PAGE * currentPage
+              i < CARDS_PER_PAGE * currentPage,
           )
           .map((launch, i) => (
             <LaunchCard

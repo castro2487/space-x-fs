@@ -1,12 +1,13 @@
+"use client";
 import {
   useState,
   useEffect,
   createContext,
   SetStateAction,
   Dispatch,
-  ReactElement,
+  ReactNode,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import axios from "utils/axios";
 
 interface AuthProviderValue {
@@ -19,17 +20,17 @@ export const AuthContext = createContext<AuthProviderValue>({
   setToken: () => {},
 });
 
-export const AuthProvider = ({ children }: { children: ReactElement }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = token;
       localStorage.setItem("token", token);
-      navigate("/");
+      router.push("/");
     }
-  }, [token, navigate]);
+  }, [token, router]);
 
   return (
     <AuthContext.Provider value={{ token, setToken }}>

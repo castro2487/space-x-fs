@@ -3,7 +3,7 @@ import {
   createContext,
   SetStateAction,
   Dispatch,
-  ReactElement,
+  ReactNode,
 } from "react";
 
 interface ModeProviderValue {
@@ -16,7 +16,7 @@ export const ModeContext = createContext<ModeProviderValue>({
   setShowAll: () => {},
 });
 
-export const ModeProvider = ({ children }: { children: ReactElement }) => {
+export const ModeProvider = ({ children }: { children: ReactNode }) => {
   const [showAll, setShowAll] = useState<boolean>(true);
 
   return (

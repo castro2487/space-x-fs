@@ -12,11 +12,11 @@ export class Favorites {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ type: "integer", nullable: false })
   flight_number: number;
 
   @Index()
-  @Column({ nullable: false })
+  @Column({ type: "integer", nullable: false })
   user_id: number;
 
   @CreateDateColumn()

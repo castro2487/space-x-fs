@@ -1,3 +1,4 @@
+"use client";
 import "./index.scss";
 
 export const Login = () => {
