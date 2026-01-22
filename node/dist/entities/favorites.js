@@ -12,26 +12,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Favorites = void 0;
 const typeorm_1 = require("typeorm");
 let Favorites = class Favorites {
+    id;
+    flight_number;
+    user_id;
+    created_at;
 };
+exports.Favorites = Favorites;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Favorites.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)({ type: "integer", nullable: false }),
     __metadata("design:type", Number)
 ], Favorites.prototype, "flight_number", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)({ type: "integer", nullable: false }),
     __metadata("design:type", Number)
 ], Favorites.prototype, "user_id", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Favorites.prototype, "created_at", void 0);
-Favorites = __decorate([
+exports.Favorites = Favorites = __decorate([
     (0, typeorm_1.Entity)(),
     (0, typeorm_1.Index)(["user_id", "flight_number"], { unique: true })
 ], Favorites);
-exports.Favorites = Favorites;

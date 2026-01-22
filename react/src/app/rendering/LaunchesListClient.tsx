@@ -1,36 +1,26 @@
 "use client";
-import { useEffect, useContext, useState } from "react";
-import { ModeContext } from "contexts/ModeContext";
+
+import { useEffect, useContext } from "react";
 import { Launch } from "types";
 import { LaunchCard, Search, Pagination, CARDS_PER_PAGE } from "components";
-import { getLaunches } from "../../api";
+import { ModeContext } from "contexts/ModeContext";
 import { useLaunchesList } from "hooks";
 
-export const LaunchesList = () => {
-  const [launches, setLaunches] = useState<Launch[]>([]);
-  const { showAll } = useContext(ModeContext);
+interface LaunchesListClientProps {
+  initialLaunches: Launch[];
+}
 
+export const LaunchesListClient = ({ initialLaunches }: LaunchesListClientProps) => {
+  const { showAll } = useContext(ModeContext);
   const {
+    launches,
     filteredLaunches,
     searchText,
     setSearchText,
     currentPage,
     setCurrentPage,
     updateFavorite,
-  } = useLaunchesList({ initialLaunches: launches, showAll });
-
-  const loadLaunches = async () => {
-    try {
-      const launches = await getLaunches();
-      setLaunches(launches);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    loadLaunches();
-  }, []);
+  } = useLaunchesList({ initialLaunches, showAll });
 
   // Reset to page 1 when search or mode changes
   useEffect(() => {
@@ -38,9 +28,9 @@ export const LaunchesList = () => {
   }, [searchText, showAll, setCurrentPage]);
 
   return (
-    <div className="p-5">
+    <div className="launches-list-container">
       <Search value={searchText} onChange={setSearchText} />
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,413px))] justify-center gap-[37px] pt-[50px]">
+      <div className="launches-list">
         {filteredLaunches
           .filter(
             (_: Launch, i: number) =>

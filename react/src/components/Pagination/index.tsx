@@ -1,6 +1,5 @@
 import { useMemo, Dispatch, SetStateAction } from "react";
-import ChevronLeftIcon from "assets/images/chevron-left.svg";
-import "./index.scss";
+import chevronLeftIcon from "assets/images/chevron-left.svg";
 
 interface PaginationProps {
   itemsCount: number;
@@ -15,33 +14,31 @@ export const Pagination = ({
   value,
   onChange,
 }: PaginationProps) => {
-  const renderPages = useMemo(
-    () =>
-      Array.from(Array(Math.ceil(itemsCount / CARDS_PER_PAGE)).keys()).map(
-        (_, i) => (
-          <div
-            key={i}
-            onClick={() => onChange(i + 1)}
-            className={i + 1 === value ? "active" : ""}
-          >
-            {i + 1}
-          </div>
-        ),
-      ),
-    [itemsCount, value],
-  );
+  const renderPages = useMemo(() => {
+    const pages = Array.from(Array(Math.ceil(itemsCount / CARDS_PER_PAGE)).keys());
+    return pages.map((_, i) => {
+      const isActive = i + 1 === value;
+      return (
+        <div
+          key={i}
+          onClick={() => onChange(i + 1)}
+          className={isActive ? "h-[32px] p-0 w-[32px] rounded-[20px] bg-white text-black flex items-center justify-center" : "h-[32px] p-[5px] flex items-center justify-center cursor-pointer"}
+        >
+          {i + 1}
+        </div>
+      );
+    });
+  }, [itemsCount, value]);
 
   return !!itemsCount ? (
-    <div className="pagination">
-      <ChevronLeftIcon
-        className={`chevron-left ${value === 1 ? "disabled" : ""}`}
-      />
+    <div className="flex items-center">
+      <div className={`cursor-pointer mr-[5px] ${value === 1 ? "opacity-50" : ""}`}>
+        <img src={chevronLeftIcon} alt="Previous" />
+      </div>
       {renderPages}
-      <ChevronLeftIcon
-        className={`chevron-right ${
-          value === Math.ceil(itemsCount / CARDS_PER_PAGE) ? "disabled" : ""
-        }`}
-      />
+      <div className={`cursor-pointer ml-[5px] rotate-180 ${value === Math.ceil(itemsCount / CARDS_PER_PAGE) ? "opacity-50" : ""}`}>
+        <img src={chevronLeftIcon} alt="Next" />
+      </div>
     </div>
   ) : null;
 };

@@ -1,24 +1,35 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLaunches = void 0;
 const spacex_1 = require("../services/spacex");
 const launches_1 = require("../services/launches");
-const getLaunches = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const cache = {
+    launches: { data: null, timestamp: 0 },
+    rockets: { data: null, timestamp: 0 },
+};
+const CACHE_DURATION = 60 * 1000; // 60 seconds
+const getLaunches = async (req, res) => {
     const userId = req.currentUserId;
-    const [launches, rockets] = yield Promise.all([
-        (0, spacex_1.fetchLaunches)(),
-        (0, spacex_1.fetchRockets)()
-    ]);
-    const outputLaunches = yield (0, launches_1.processLaunches)(userId, launches, rockets);
+    const now = Date.now();
+    let launchesData = cache.launches.data;
+    let rocketsData = cache.rockets.data;
+    const launchesExpired = now - cache.launches.timestamp > CACHE_DURATION;
+    const rocketsExpired = now - cache.rockets.timestamp > CACHE_DURATION;
+    if (!launchesData || launchesExpired || !rocketsData || rocketsExpired) {
+        const [fetchedLaunches, fetchedRockets] = await Promise.all([
+            !launchesData || launchesExpired ? (0, spacex_1.fetchLaunches)() : Promise.resolve(launchesData),
+            !rocketsData || rocketsExpired ? (0, spacex_1.fetchRockets)() : Promise.resolve(rocketsData),
+        ]);
+        if (!launchesData || launchesExpired) {
+            cache.launches = { data: fetchedLaunches, timestamp: now };
+            launchesData = fetchedLaunches;
+        }
+        if (!rocketsData || rocketsExpired) {
+            cache.rockets = { data: fetchedRockets, timestamp: now };
+            rocketsData = fetchedRockets;
+        }
+    }
+    const outputLaunches = await (0, launches_1.processLaunches)(userId, launchesData, rocketsData);
     return res.status(200).json(outputLaunches);
-});
+};
 exports.getLaunches = getLaunches;

@@ -24,6 +24,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
+  // Load token from localStorage on mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+      axios.defaults.headers.common["Authorization"] = storedToken;
+    }
+  }, []);
+
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = token;
